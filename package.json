@@ -21,6 +21,7 @@
     "vercel": "^28.17.0"
   },
   "dependencies": {
+    "@vercel/edge-config": "^0.1.5",
     "cli-color": "^2.0.3",
     "dotenv": "^16.0.3",
     "node-fetch": "^2.6.9"
