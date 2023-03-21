@@ -1,7 +1,7 @@
 require('dotenv').config();
 const lcl = require('cli-color');
 const fetch = require('node-fetch');
-const headers = require('../../lib/headers.json');
+const headers = require('../../lib/headers')();
 
 // fetch https://buy.gigaclear.com/api/cms/vouchers to get all the vouchers
 module.exports = async (req, res) => {
