@@ -46,12 +46,15 @@
                 document.getElementById("county").innerHTML = `<strong>County:</strong> ${propertyJSON.service.property.county}`;
                 document.getElementById("post_code").innerHTML = `<strong>Post Code:</strong> ${propertyJSON.service.property.post_code}`;
 
+                document.getElementById("build_stage").innerHTML = `<strong>Build Stage:</strong> ${propertyJSON.service.community.status}`;
                 document.getElementById("build_available").innerHTML = `<strong>Order Available:</strong> ${propertyJSON.service.property.order_available ? "Available" : "Not Available"}`;
                 document.getElementById("build_rfs").innerHTML = `<strong>Ready For Service:</strong> ${propertyJSON.service.property.ready_for_service ? "Yes" : "No"}`;
                 document.getElementById("build_order").innerHTML = `<strong>Pre Order:</strong> ${propertyJSON.service.property.pre_order ? "Yes" : "No"}`;
 
                 document.getElementById("est_comp").innerHTML = `<strong>Estimated Completion:</strong> ${propertyJSON.service.community.estimated_completion.string}`;
                 document.getElementById("est_start").innerHTML = `<strong>Estimated Start Date:</strong> ${propertyJSON.service.community.estimated_start_date.string}`;
+
+                document.getElementById("card-primary").style.display = "block";
             } catch (error) {
                 console.log(error);
             }
@@ -69,7 +72,7 @@
     <div class="container-fluid">
         <div class="row" id="address">
             <div class="col-12">
-                <div class="card">
+                <div class="card" style="display: none;" id="card-primary">
                     <div class="card-header" id="address-id">
                         1 Example Road (0000A00000AAAAAAAA)
                     </div>
@@ -88,6 +91,7 @@
                             Build Status
                         </div>
                         <ul class="list-group list-group-flush">
+                            <li class="list-group-item" id="build_stage"><strong>Build Stage:</strong> Unknown</li>
                             <li class="list-group-item" id="build_available"><strong>Order Available:</strong> Not Available</li>
                             <li class="list-group-item" id="build_rfs"><strong>Ready For Service:</strong> No</li>
                             <li class="list-group-item" id="build_order"><strong>Pre Order:</strong> No</li>
