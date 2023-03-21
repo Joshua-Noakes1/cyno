@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" size="340x340" href="static/images/favicon.png" />
+    <title>Cyno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+
+    <script defer>
+        // script when the pageloads
+        addEventListener("load", async function () {
+            // split by & and ? and get the value of after the last one if it is empty then we remove it from the urk
+            var lastQmark = window.location.href.split("?");
+            lastQmark = lastQmark[lastQmark.length - 1];
+            var lastAmp = window.location.href.split("&");
+            lastAmp = lastAmp[lastAmp.length - 1];
+
+            if (lastQmark === "") {
+                window.location.href = window.location.href.split("?")[0];
+            }
+            if (lastAmp == "") {
+                window.location.href = window.location.href.split("&")[0];
+            } 
+
+
+            // we run the main function
+            main();
+        });
+
+        async function main() {
+            var plansAPI = await fetch("/api/v1/product");
+            if (plansAPI.status !== 200) {
+                console.error("Error: " + plansAPI.status);
+                alert("Error: " + plansAPI.status);
+            }
+            plansAPI = await plansAPI.json();
+
+            // for each plan make a card
+            for (var plan of plansAPI.productArray) {
+                console.log(`Plan: ${plan.name} (${plan.int_id}${plan.int_only ? " - Internal Only 🔒" : ""})`);
+
+                var plansDIV = document.getElementById("plans");
+                var planCol = document.createElement("div");
+                planCol.className = "col-3";
+
+                var planCard = document.createElement("div");
+                planCard.className = `card ${plan.int_only ? "border-warning" : "border-primary"}`;
+
+                var planCardHeader = document.createElement("div");
+                planCardHeader.className = "card-header";
+                planCardHeader.innerHTML =
+                    `Plan - ${plan.int_id} (${plan.type})${plan.int_only ? " (Internal Only 🔒)": ""}`;
+
+                var planCardBody = document.createElement("div");
+                planCardBody.className = "card-body";
+
+                var planCardTitle = document.createElement("h5");
+                planCardTitle.className = "card-title";
+                planCardTitle.innerHTML = plan.name;
+
+                var planCardDesc = document.createElement("p");
+                planCardDesc.className = "card-text";
+                planCardDesc.innerHTML = plan.description;
+
+                planCardBody.appendChild(planCardTitle);
+                planCardBody.appendChild(planCardDesc);
+
+                // do extras
+                var planCardExtras = document.createElement("ul");
+                planCardExtras.className = "list-group list-group-flush";
+
+                for (var extra of plan.extras) {
+                    var planCardExtra = document.createElement("li");
+                    planCardExtra.className = "list-group-item";
+                    planCardExtra.setAttribute("title", extra.description)
+                    planCardExtra.innerHTML =
+                        `${extra.name}${extra.charge !== undefined ? ` - Price: ${extra.charge.charge}/${extra.charge.charge_type.charAt(0).toUpperCase() + extra.charge.charge_type.slice(1).toLowerCase()}` : " - Price: Free or Unknown"}`;
+                    if (extra.int_only || extra.default) {
+                        planCardExtra.innerHTML +=
+                            ` (${extra.int_only ? "<p title='Internal Only' style='display: inline; color: red;'>🔒</p>" : ""}${extra.default ? "<p title='Selected by default' style='display: inline; color: green;'>🌍</p>" : ""})`;
+                    }
+                    planCardExtras.appendChild(planCardExtra);
+                }
+
+                planCardBody.appendChild(planCardExtras);
+
+                var planSpacer = document.createElement("div");
+                planSpacer.style.marginTop = "1rem";
+
+                // append header to card
+                planCard.appendChild(planCardHeader);
+                planCard.appendChild(planCardBody);
+                planCol.appendChild(planCard);
+                planCol.appendChild(planSpacer);
+
+                // we only want to show residental non int plans by default and only add internal or business if the user has asked in the url
+                var alreadyAdded = false;
+                var internalPlans = window.location.href.includes("internal");
+                var businessPlans = window.location.href.includes("business");
+                var residentalPlans = !window.location.href.includes("nores");
+
+                console.log(
+                    `Internal: ${internalPlans} | Business: ${businessPlans} | Residental: ${residentalPlans}`)
+
+                // bydefault we only want to show resi plans
+                if (plan.type === "Residential" && residentalPlans) {
+                    // if internal we add the internal plans as well
+                    if (internalPlans && plan.int_only) {
+                        alreadyAdded = true;
+                        plansDIV.appendChild(planCol);
+                    }
+                    if (!alreadyAdded && !plan.int_only) {
+                        alreadyAdded = true;
+                        plansDIV.appendChild(planCol);
+                    }
+                }
+
+                if (plan.type === "Business" && businessPlans) {
+                    if (internalPlans && plan.int_only) {
+                        alreadyAdded = true;
+                        plansDIV.appendChild(planCol);
+                    }
+                    if (!alreadyAdded && !plan.int_only) {
+                        alreadyAdded = true;
+                        plansDIV.appendChild(planCol);
+                    }
+                }
+
+            }
+
+            // check how many children are in plans div
+            var plansDIV = document.getElementById("plans");
+            if (plansDIV.childElementCount === 0) {
+                var noPlans = document.createElement("h1");
+                noPlans.innerHTML = "No Plans Found";
+                noPlans.style.textAlign = "center";
+                noPlans.style.marginTop = "1rem";
+                plansDIV.appendChild(noPlans);
+            }
+        }
+
+        async function plansMove(type) {
+            // take the href and add or remove internal, business or nores depending if it exists or not and then reload the page
+            switch (type) {
+                case 'int':
+                    if (window.location.href.includes("internal")) {
+                        window.location.href = window.location.href.replace("?internal", "");
+                        window.location.href = window.location.href.replace("&internal", "");
+                        window.location.href = window.location.href.replace("internal", "");
+                    } else {
+                        // check for a ? and if there is one add &internal if not add ?internal
+                        if (window.location.href.includes("?")) {
+                            window.location.href += "&internal";
+                        } else {
+                            window.location.href += "?internal";
+                        }
+                    }
+
+                    // remove ? if nothing is left
+                    if (window.location.href.split("?")[1] === "") {
+                        window.location.href = window.location.href.replace("?", "");
+                    }
+                    break;
+                case 'bus':
+                    if (window.location.href.includes("business")) {
+                        window.location.href = window.location.href.replace("?business", "");
+                        window.location.href = window.location.href.replace("&business", "");
+                        window.location.href = window.location.href.replace("business", "");
+                    } else {
+                        // check for a ? and if there is one add &internal if not add ?internal
+                        if (window.location.href.includes("?")) {
+                            window.location.href += "&business";
+                        } else {
+                            window.location.href += "?business";
+                        }
+                    }
+
+                    // remove ? if nothing is left
+                    if (window.location.href.split("?")[1] === "") {
+                        window.location.href = window.location.href.replace("?", "");
+                    }
+                    break;
+                case 'res':
+                    if (window.location.href.includes("nores")) {
+                        window.location.href = window.location.href.replace("?nores", "");
+                        window.location.href = window.location.href.replace("&nores", "");
+                        window.location.href = window.location.href.replace("nores", "");
+                    } else {
+                        // check for a ? and if there is one add &internal if not add ?internal
+                        if (window.location.href.includes("?")) {
+                            window.location.href += "&nores";
+                        } else {
+                            window.location.href += "?nores";
+                        }
+                    }
+
+                    // remove ? if nothing is left
+                    if (window.location.href.split("?")[1] === "") {
+                        window.location.href = window.location.href.replace("?", "");
+                    }
+                    break;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar  bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Cyno</a>
+            <div>
+                <button class="btn btn-outline-primary" style="margin-right: 1rem;" onclick="plansMove('int')">Toggle
+                    Internal</button>
+                <button class="btn btn-outline-primary" style="margin-right: 1rem;" onclick="plansMove('bus')">Toggle
+                    Business</button>
+                <button class="btn btn-outline-primary" onclick="plansMove('res')">Toggle Residental</button>
+            </div>
+        </div>
+    </nav>
+    <div style="margin-top: 1rem;"></div>
+    <div class="container-fluid">
+        <div class="row" id="plans">
+            <!-- <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        Plan - Business
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Plan Title</h5>
+                        <p class="card-text">Plan Desc</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Extra - 1</li>
+                        <li class="list-group-item">Extra - 2</li>
+                        <li class="list-group-item">Extra - 3</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 1rem;"></div>
+            </div> -->
+
+        </div>
+    </div>
+</body>
+
+</html>
