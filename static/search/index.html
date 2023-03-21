@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" size="340x340" href="static/images/favicon.png" />
+    <title>Cyno</title>
+    <meta name="author" content="Joshua-Noakes1/cyno">
+    <meta name="description" content="What did the ocean say to the beach? What? Nothing, it just waved.">
+    <meta name="color" content="#413FBC">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+    <style>
+        body {
+            background-color: #333;
+        }
+    </style>
+
+    <script defer>
+        addEventListener("load", function () {
+            // reset the form
+            document.getElementById("core").reset();
+            document.getElementById("core2").reset();
+        }, false);
+
+        async function getPostcode() {
+
+            event.preventDefault();
+
+            const postcode = document.getElementById("clientPostcode").value;
+
+            const response = await fetch(`/api/v1/findPostcode?postcode=${postcode}`);
+            if (response.status === 200) {
+                const data = await response.json();
+
+                for (var addy of data.addresses) {
+                    var option = document.createElement("option");
+                    option.text = addy.address;
+                    option.value = addy.url;
+                    var select = document.getElementById("addresses");
+                    select.appendChild(option);
+                }
+
+                document.getElementById("core-card").style.display = "none";
+                document.getElementById("core2-card").style.display = "block";
+            } else {
+                console.log("Error");
+                alert("Error finding addresses")
+            }
+        }
+
+        async function switchAddress() {
+            event.preventDefault();
+
+            const address = document.getElementById("addresses").value;
+            window.location.href = address;
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar  bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Cyno</a>
+        </div>
+    </nav>
+    <div style="margin-top: 1rem;"></div>
+
+    <div class="container-fluid">
+        <div class="card" id="core-card">
+            <div class="card-body">
+                <form onsubmit="getPostcode()" id="core">
+                    <label id="client-titles" for="clientName" class="form-label"><strong>Enter
+                            Postcode</strong></label>
+                    <div class="input-group">
+                        <input type="text" placeholder="SL1 0AB" class="form-control rounded" id="clientPostcode"
+                            style="margin-right: 1rem;" />
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-outline-primary">Search Postcode</button>
+                </form>
+            </div>
+        </div>
+        <div style="margin-top: 1rem;"></div>
+        <div class="card" id="core2-card" style="display: none">
+            <div class="card-body">
+                <form onsubmit="switchAddress()" id="core2">
+                    <label id="client-titles" for="clientName" class="form-label"><strong>Select
+                            Address</strong></label>
+                    <select class="form-select" aria-label="Default select example" id="addresses">
+                        <option selected hidden>Select Address</option>
+                    </select>
+                    <br>
+                    <button type="submit" class="btn btn-outline-primary">Switch Address</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

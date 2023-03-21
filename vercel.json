@@ -7,6 +7,10 @@
         {
             "src": "/property/(.*)",
             "dest": "/static/property/index.html"
+        },
+        {
+            "src": "/search",
+            "dest": "/static/search/index.html"
         }
     ],
     "regions": [
