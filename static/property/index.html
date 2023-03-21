@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" size="340x340" href="static/images/favicon.png" />
+    <title>Cyno</title>
+    <meta name="author" content="Joshua-Noakes1/cyno">
+    <meta name="description" content="What did the ocean say to the beach? What? Nothing, it just waved.">
+    <meta name="color" content="#413FBC">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+    <style>
+        body {
+            background-color: #333;
+        }
+    </style>
+    <script async defer>
+        var propertyID = window.location.pathname.split("/")[2];
+        addEventListener("load", async function () {
+            main()
+        }, false);
+
+        async function main() {
+            try {
+                var propertyJSON = await fetch(`/api/v1/checkProperty?propertyID=${propertyID}`);
+                if (propertyJSON.status !== 200) {
+                    console.log("Error " + propertyJSON.status);
+                    throw new Error("Error " + propertyJSON.status);
+                }
+                propertyJSON = await propertyJSON.json();
+
+                // get all the elements and set the text
+                document.getElementById("address-id").innerHTML = `${propertyJSON.service.property.address} (${propertyJSON.service.property.id})`;
+                document.getElementById("address-name").innerHTML = propertyJSON.service.property.address;
+                document.getElementById("comm-name").innerHTML = propertyJSON.service.community.name;
+
+                document.getElementById("add_line").innerHTML = `<strong>Address Line:</strong> ${propertyJSON.service.property.building_number} ${propertyJSON.service.property.street_name}`;
+                document.getElementById("locality").innerHTML = `<strong>Locality:</strong> ${propertyJSON.service.property.locality}`;
+                document.getElementById("post_town").innerHTML = `<strong>Post Town:</strong> ${propertyJSON.service.property.post_town}`;
+                document.getElementById("county").innerHTML = `<strong>County:</strong> ${propertyJSON.service.property.county}`;
+                document.getElementById("post_code").innerHTML = `<strong>Post Code:</strong> ${propertyJSON.service.property.post_code}`;
+
+                document.getElementById("build_available").innerHTML = `<strong>Order Available:</strong> ${propertyJSON.service.property.order_available ? "Available" : "Not Available"}`;
+                document.getElementById("build_rfs").innerHTML = `<strong>Ready For Service:</strong> ${propertyJSON.service.property.ready_for_service ? "Yes" : "No"}`;
+                document.getElementById("build_order").innerHTML = `<strong>Pre Order:</strong> ${propertyJSON.service.property.pre_order ? "Yes" : "No"}`;
+
+                document.getElementById("est_comp").innerHTML = `<strong>Estimated Completion:</strong> ${propertyJSON.service.community.estimated_completion.string}`;
+                document.getElementById("est_start").innerHTML = `<strong>Estimated Start Date:</strong> ${propertyJSON.service.community.estimated_start_date.string}`;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar  bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Cyno</a>
+        </div>
+    </nav>
+    <div style="margin-top: 1rem;"></div>
+    <div class="container-fluid">
+        <div class="row" id="address">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" id="address-id">
+                        1 Example Road (0000A00000AAAAAAAA)
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="address-name">1 Example Road London</h5>
+                        <p class="card-text" id="comm-name">Tower Hamlets (West)</p>
+                        <hr>
+                        <p class="card-text" id="add_line"><strong>Address Line:</strong> 1 Example Road</p>
+                        <p class="card-text" id="locality"><strong>Locality:</strong> London</p>
+                        <p class="card-text" id="post_town"><strong>Post Town:</strong> London</p>
+                        <p class="card-text" id="county"><strong>County:</strong> London</p>
+                        <p class="card-text" id="post_code"><strong>Post Code:</strong> SL1 0AB</p>
+                    </div>
+                    <div>
+                        <div class="card-header">
+                            Build Status
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" id="build_available"><strong>Order Available:</strong> Not Available</li>
+                            <li class="list-group-item" id="build_rfs"><strong>Ready For Service:</strong> No</li>
+                            <li class="list-group-item" id="build_order"><strong>Pre Order:</strong> No</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="card-header">
+                            Build Dates
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" id="est_comp"><strong>Estimated Completion:</strong> Friday June 30th 2023</li>
+                            <li class="list-group-item" id="est_start"><strong>Estimated Start Date:</strong> Friday June 30th 2023</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;"></div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -3,6 +3,10 @@
         {
             "src": "/",
             "dest": "/static/index.html"
+        },
+        {
+            "src": "/property/(.*)",
+            "dest": "/static/property/index.html"
         }
     ],
     "regions": [
