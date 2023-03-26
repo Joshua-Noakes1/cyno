@@ -15,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
     </script>
+    <script src=" https://cdn.jsdelivr.net/npm/ismobilejs@1.1.1/dist/isMobile.min.js "></script>
     <style>
         body {
             background-color: #333;
@@ -55,7 +56,7 @@
 
                 var plansDIV = document.getElementById("plans");
                 var planCol = document.createElement("div");
-                planCol.className = "col-3";
+                planCol.className = isMobile.any ? "col-12" : "col-3";
 
                 var planCard = document.createElement("div");
                 planCard.className = `card ${plan.int_only ? "border-warning" : "border-primary"}`;
@@ -70,11 +71,12 @@
 
                 var planCardTitle = document.createElement("h5");
                 planCardTitle.className = "card-title";
-                planCardTitle.innerHTML = plan.name;
+                planCardTitle.innerHTML = `${plan.name}`;
 
                 var planCardDesc = document.createElement("p");
                 planCardDesc.className = "card-text";
-                planCardDesc.innerHTML = plan.description;
+                planCardDesc.innerHTML =
+                    `${plan.description} <div style="margin-top: 0.5rem;"></div> <strong>Price:</strong> <div style="margin-top: 0.25rem;"></div> <strong>Yearly:</strong> £${Math.round(Number(plan.charge.charge) * 12)} (£${Math.round(plan.charge.monthly * 12)}) <div style="margin-top: 0.25rem;"></div> <strong>${plan.charge.charge_type.charAt(0).toUpperCase() + plan.charge.charge_type.slice(1).toLowerCase()}:</strong> £${Number(plan.charge.charge)} <div style="margin-top: 0.25rem;"></div> <strong> Monthly (All Extras): </strong> £${plan.charge.monthly} <div style="margin-top: 0.25rem;"></div> <strong> Oneoff: </strong> £${Number(plan.charge.oneoff)} <div style="margin-top: 0.5rem;"></div> <strong>Speed:</strong> <div style="margin-top:0.25rem;"></div> <strong> Average: </strong> ${plan.speed.average_speed} <div style="margin-top:0.25rem;"></div> <strong> Max: </strong> ${plan.speed.maximum_speed} <div style="margin-top:0.25rem;"></div> <strong> Min: </strong> ${plan.speed.minimum_speed}`;
 
                 planCardBody.appendChild(planCardTitle);
                 planCardBody.appendChild(planCardDesc);
