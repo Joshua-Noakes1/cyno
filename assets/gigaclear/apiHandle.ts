@@ -1,19 +1,24 @@
 import lcl from 'cli-color';
 
-export default async function apiHandle(url: String) {
+export default async function apiHandle(url: String, method: String = 'GET', body: Object = {}) {
     try {
-        // Fetch API from Gigaclear
-        let gigaclearResponse = await fetch(`https://buy.gigaclear.com/api/${url}`, {
-            "method": "GET",
+        // add body if not GET or HEAD
+        let gigaclearOptions: any = {
+            "method": method.toString(),
             "headers": {
                 "Accept": "application/json, text/plain, */*",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0 (Github: @Joshua-Noakes1/cyno)",
                 "Referer": "https://buy.gigaclear.com/",
                 "x-api-key": process.env.API_KEY || "dzdRdkxmZHlmUFVncXM1YlBPaHY="
             }
-        });
-        if (gigaclearResponse.status !== 200) {
-            throw new Error(`Status code ${gigaclearResponse.status}`);
+        }
+        if (method?.toString() !== 'GET' && method?.toString() !== 'HEAD') gigaclearOptions['body'] = JSON.stringify(body);
+
+
+        // Fetch API from Gigaclear
+        let gigaclearResponse = await fetch(`https://buy.gigaclear.com/api${url}`, gigaclearOptions);
+        if (gigaclearResponse['status'] !== 200) {
+            throw new Error(`Status code ${gigaclearResponse['status']}`);
         }
 
         // Parse response
