@@ -7,7 +7,7 @@ function mapExtras(extraProduct: any) {
         "id": extraProduct['product_id']?.toString().trim(),
         "name": extraProduct['description']?.toString().trim(),
         "description": extraProduct['detailed_description']?.toString().trim(),
-        "charge": extraProduct['charge']['charge']?.toString().trim(),
+        "charge": extraProduct['charge']['charge_type']?.toString().toUpperCase().trim() == "FREE" ? '0.0' : extraProduct['charge']['charge']?.toString().trim(),
         "isOneOff": extraProduct['charge']['charge_type']?.toString().toUpperCase().trim() == "ONEOFF" ? true : false, // would be added at the start of the contract (eg an install fee)
         "isMonthly": extraProduct['charge']['charge_type']?.toString().toUpperCase().trim() == "MONTHLY" ? true : false,
         "isDefault": extraProduct['is_default']?.toString().trim() == "true" ? true : false,
@@ -32,7 +32,6 @@ export default defineEventHandler(async (event) => {
             for (let productIndexAPI in productGroup['products']) {
                 let productAPI = productGroup['products'][productIndexAPI];
                 try {
-                    console.log(productAPI['service_product']['name']?.toString().toUpperCase().trim());
                     let productJSON: any = {
                         // Main Product Info
                         "id": productAPI['service_product']['product_id']?.toString().trim(), // Certian product names have symbols in them this seems better 
@@ -83,6 +82,7 @@ export default defineEventHandler(async (event) => {
             data: products
         }
     } catch (err: any) {
+        console.log(`${lcl.redBright(`[Gigaclear API - Error]`)} Failed to get product details${process.env.NODE_ENV == 'development' ? `: ${err['message']}` : ''}`);
         throw createError({
             statusCode: 500,
             statusText: process.env.NODE_ENV == 'development' ? err['message'] : 'Something went wrong!',

@@ -18,7 +18,9 @@ export default async function apiHandle(url: String, method: String = 'GET', bod
         // Fetch API from Gigaclear
         let gigaclearResponse = await fetch(`https://buy.gigaclear.com/api${url}`, gigaclearOptions);
         if (gigaclearResponse['status'] !== 200) {
-            throw new Error(`Status code ${gigaclearResponse['status']}`);
+            let error: any = new Error(`Status code ${gigaclearResponse['status']}`);
+            error['statusCode'] = gigaclearResponse['status'];
+            throw error;
         }
 
         // Parse response
@@ -30,7 +32,8 @@ export default async function apiHandle(url: String, method: String = 'GET', bod
         console.log(`${lcl.redBright(`[Gigaclear API - Error]`)} Failed to fetch "${url}"${process.env.NODE_ENV == 'development' ? `: ${err['message']}` : ''}`);
         return {
             success: false,
-            message: `Failed to fetch "${url}"${process.env.NODE_ENV == 'development' ? `: ${err['message']}` : ''}`
+            message: `Failed to fetch "${url}"${process.env.NODE_ENV == 'development' ? `: ${err['message']}` : ''}`,
+            statusCode: err['statusCode'] || 500
         }
     }
 }
