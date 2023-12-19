@@ -1,7 +1,9 @@
 # cyno
 
-Reverse engineering of the [Gigaclear buy.gigaclear.com](https://gigaclear.com/) API.
+Cyno lets you see extended information about an address covered by UK FTTP broadband provider [Gigaclear](https://www.gigaclear.com/).
 
-## contact
+Gigaclear's [buy.gigaclear.com](https://buy.gigaclear.com) API is used to retrieve information about a community and the properties within it, in certian cases availability infomation such as possible service and telco plans along with build dates are also returned.
 
-If anyone at Gigaclear would like this repo removed please contact me using either an @gigaclear.com email or one which belongs to Gigaclear using the email in my profile.
+## Contact
+
+If anyone at Gigaclear has any issues with this project please contact me at the email address or twitter in my [profile](https://github.com/Joshua-Noakes1).
