@@ -31,6 +31,6 @@ export default defineEventHandler(async (event) => {
         throw createError({
             statusCode: 500,
             statusText: process.env.NODE_ENV == 'development' ? err['message'] : 'Something went wrong!',
-        })
+        });
     }
 });
