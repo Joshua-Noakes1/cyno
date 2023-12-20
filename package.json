@@ -17,6 +17,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@vueuse/core": "^10.7.0",
     "cli-color": "^2.0.3"
   }
 }
