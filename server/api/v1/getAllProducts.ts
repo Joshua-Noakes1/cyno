@@ -18,6 +18,10 @@ function mapExtras(extraProduct: any) {
 // Returns all products from Gigaclear
 export default defineEventHandler(async (event) => {
     try {
+        // get the product id from the query
+        let URLSearchQuery = getQuery(event);
+        let productID = URLSearchQuery['productID']?.toString().trim();
+
         // get api
         let gigaclearProducts = await gigaclearAPI('/obj/product');
         if (!gigaclearProducts['success']) throw new Error(gigaclearProducts['message']);
@@ -76,6 +80,14 @@ export default defineEventHandler(async (event) => {
             console.log(`${lcl.greenBright(`[Gigaclear API - Success]`)} Sorted Product Group "${productGroupName.charAt(0).toUpperCase() + productGroupName.slice(1)}"`);
         }
 
+        // if productID is provided, filter products to only include that product
+        if (productID) { // Copilot assumes that this is a salesforce ID
+            if (!productID.match(/^[a-zA-Z0-9]{15,18}$/)) throw new Error('Invalid product ID');
+            products = products.filter((product: any) => product['id'] == productID);
+            if (products.length <= 0) throw new Error('No products found!');
+            products = products[0];
+        }
+        
         // return products
         return {
             success: true,
