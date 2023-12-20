@@ -33,21 +33,39 @@ body {
 	}
 }
 
-.text-color {
+/* BS Overwrite */
+.btn {
+    border-radius: 2rem;
+}
+
+/* Colors */
+.text-color,
+.text-color:hover,
+.text-color:focus {
 	color: var(--text-color); /* For when an element wants to ignore the html,body color */
 }
 
-.text-muted-color {
+.text-muted-color,
+.text-muted-color:hover,
+.text-muted-color:focus {
     color: var(--muted-text-color);
 }
 
-.text-primary {
+.text-primary,
+.text-primary:hover,
+.text-primary:focus {
 	color: var(--primary);
 }
-.text-secondary {
+
+.text-secondary,
+.text-secondary:hover,
+.text-secondary:focus {
 	color: var(--secondary);
 }
-.text-accent {
+
+.text-accent,
+.text-accent:hover,
+.text-accent:focus {
 	color: var(--accent);
 }
 

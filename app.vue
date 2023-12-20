@@ -1,6 +1,8 @@
 <template>
   <div>
     <NavigationNavBar />
-    <NuxtPage />
+    <div class="container-fluid">
+      <NuxtPage />
+    </div>
   </div>
 </template>
