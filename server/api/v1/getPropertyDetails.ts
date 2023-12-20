@@ -20,14 +20,14 @@ export default defineEventHandler(async (event) => {
                 "name": gigaclearPropertyDetails['data']['address']?.toString().trim(),
                 "message": gigaclearPropertyDetails['data']['message']?.toString().trim(),
                 "address": {
-                    "line1": gigaclearPropertyDetails['data']['address']?.toString().trim(),
+                    "line1": gigaclearPropertyDetails['data']['address']?.toString().split(gigaclearPropertyDetails['data']['locality']?.toString().trim())[0].trim(),
                     "village": gigaclearPropertyDetails['data']['locality']?.toString().trim(),
                     "town": gigaclearPropertyDetails['data']['post_town']?.toString().trim(),
                     "county": gigaclearPropertyDetails['data']['county']?.toString().trim(),
                     "postcode": gigaclearPropertyDetails['data']['post_code']?.toString().trim(),
                 },
                 "service": {
-                    "isPreOrderAvailable": gigaclearPropertyDetails['data']['rfs']?.toString().trim() == "true" || gigaclearPropertyDetails['data']['pre_order']?.toString().trim() == "true" ? true : false,
+                    "isOrderAvailable": gigaclearPropertyDetails['data']['rfs']?.toString().trim() == "true" || gigaclearPropertyDetails['data']['pre_order']?.toString().trim() == "true" ? true : false,
                     "isReadyForService": gigaclearPropertyDetails['data']['rfs']?.toString().trim() == "true" ? true : false,
                     "isPreOrder": gigaclearPropertyDetails['data']['pre_order']?.toString().trim() == "true" ? true : false,
                     "hasServiceInstalled": gigaclearPropertyDetails['data']['service_installed']?.toString().trim() == "true" ? true : false,
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
         // return property details
         return {
             success: true,
-            newData: propertyDetails            
+            data: propertyDetails            
         }
     } catch (err: any) {
         console.log(`${lcl.redBright(`[Gigaclear API - Error]`)} Failed to get postcode details${process.env.NODE_ENV == 'development' ? `: ${err['message']}` : ''}`);

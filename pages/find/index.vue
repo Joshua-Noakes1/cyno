@@ -74,10 +74,10 @@ export default {
                 addressFinder.style.display = 'block';
                 postcodeStageOne = true;
             } else {
-
                 // get the selected address
                 let selectedAddress = addressList.value;
-                if (!selectedAddress) {
+                console.log(selectedAddress?.toString().replace(/\s/g, '').trim())
+                if (!selectedAddress || selectedAddress?.toString().replace(/\s/g, '').trim().toLowerCase() == 'selectyouraddress') {
                     // We would show an error here but we dont have a design for it
                     alert("Please select an address");
                     return;
