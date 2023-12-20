@@ -1,3 +1,17 @@
+<script setup>
+// set meta stuff
+let pageTitle = 'Find Address';
+let pageDescription = 'Find your address';
+useSeoMeta({
+    title: pageTitle,
+    description: pageDescription,
+    ogTitle: pageTitle,
+    ogDescription: pageDescription,
+    twitterTitle: pageTitle,
+    twitterDescription: pageDescription,
+});
+</script>
+
 <template>
     <form class="container">
         <legend>Find your Address</legend>
