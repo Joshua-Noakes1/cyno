@@ -40,7 +40,6 @@ export default {
 </script>
 
 <template>
-    {{ isDark }}
     <div class="card shadow" style="margin-bottom: 1rem;" :data-bs-theme="`${isDark ? 'light' : 'dark'}`">
         <div class="card-body">
             <h6 class="card-text float-end"><span v-if="details['isDefault']"
