@@ -1,0 +1,87 @@
+<!-- https://chat.openai.com/share/cc2fb67c-f4b8-4a17-9e48-fc6485dca7f6 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <style>
+    /* Define the glowing effect for the div */
+    @keyframes glowing {
+      0% {
+        box-shadow: 0 0 10px var(--glow-color);
+      }
+
+      50% {
+        box-shadow: 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
+      }
+
+      100% {
+        box-shadow: 0 0 10px var(--glow-color);
+      }
+    }
+
+    /* Apply the glowing effect to the div and style */
+    .glowing-div {
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid transparent;
+      animation: glowing 1.5s infinite;
+      border-radius: 2rem;
+    }
+
+    /* Adjust the colors of the glow based on the alert color */
+    .alert-danger {
+      color: black;
+      background-color: transparent;
+      --glow-color: red;
+    }
+
+    .alert-warning {
+      color: black;
+      background-color: transparent;
+      --glow-color: #ffc107;
+    }
+
+    .alert-success {
+      color: black;
+      background-color: transparent;
+      --glow-color: green;
+    }
+
+    /* Slow down the animation for specific elements */
+    .slow-animation {
+      animation-duration: 3s;
+      /* Change the duration to slow down the animation */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-danger glowing-div" role="alert">
+          Not Available
+        </div>
+      </div>
+      <div class="col">
+        <div class="alert alert-warning glowing-div" role="alert">
+          Ready for Service
+        </div>
+      </div>
+      <div class="col">
+        <div class="alert alert-success glowing-div slow-animation" role="alert">
+          Service Live
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
