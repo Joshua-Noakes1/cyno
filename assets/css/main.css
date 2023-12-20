@@ -8,9 +8,11 @@ html,
 body {
 	background-color: #f8f9fc;
 	color: #0a0e19;
-    padding-top: 2rem;
+	padding-top: 2rem;
 	/* site colors */
-    --text-color: #0a0e19;
+	--primary-background: #f8f9fc;
+	--text-color: #0a0e19;
+    --muted-text-color: #a0a0a0;
 	--primary: #4d73c5;
 	--secondary: #adc6ff;
 	--accent: #d365b3;
@@ -22,7 +24,9 @@ body {
 		background-color: #202021;
 		color: #fff;
 		/* site colors */
-        --text-color: #fff;
+		--primary-background: #202021;
+		--text-color: #fff;
+        --muted-text-color: #a0a0a0;
 		--primary: #8fb3ff;
 		--secondary: #001952;
 		--accent: #f199bf;
@@ -30,7 +34,11 @@ body {
 }
 
 .text-color {
-    color: var(--text-color); /* For when an element wants to ignore the html,body color */
+	color: var(--text-color); /* For when an element wants to ignore the html,body color */
+}
+
+.text-muted-color {
+    color: var(--muted-text-color);
 }
 
 .text-primary {
@@ -41,4 +49,13 @@ body {
 }
 .text-accent {
 	color: var(--accent);
+}
+
+/* Link Highlight Stuff */
+a.fadeLink {
+	text-decoration: underline solid transparent;
+	transition: text-decoration 0.3s ease;
+}
+a.fadeLink:hover {
+	text-decoration: underline solid;
 }
