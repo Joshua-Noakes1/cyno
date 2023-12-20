@@ -1,7 +1,4 @@
 <script lang="ts">
-import { useDark, useToggle } from '@vueuse/core';
-let isDark = useDark();
-
 export default {
     name: 'CardsProduct',
     props: {
@@ -26,11 +23,6 @@ export default {
             required: true
         }
     },
-    setup() {
-        return {
-            isDark
-        }
-    },
     computed: {
         getURL() {
             return `/products/${this.id}`
@@ -40,7 +32,7 @@ export default {
 </script>
 
 <template>
-    <div class="card shadow" style="margin-bottom: 1rem;" :data-bs-theme="`${isDark ? 'light' : 'dark'}`">
+    <div ref="cardRef" class="card shadow" style="margin-bottom: 1rem;" data-bs-theme="light">
         <div class="card-body">
             <h6 class="card-text float-end"><span v-if="details['isDefault']"
                     title="This product is selected by default for this category">✔️</span><span

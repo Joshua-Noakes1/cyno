@@ -6,36 +6,21 @@
 
 html,
 body {
-	background-color: #f8f9fc;
-	color: #0a0e19;
-	padding-top: 2rem;
+	background-color: #202021;
+	color: #fff;
+    padding-top: 1.75rem;
 	/* site colors */
-	--primary-background: #f8f9fc;
-	--text-color: #0a0e19;
-    --muted-text-color: #a0a0a0;
-	--primary: #4d73c5;
-	--secondary: #adc6ff;
-	--accent: #d365b3;
-}
-
-@media (prefers-color-scheme: dark) {
-	html,
-	body {
-		background-color: #202021;
-		color: #fff;
-		/* site colors */
-		--primary-background: #202021;
-		--text-color: #fff;
-        --muted-text-color: #a0a0a0;
-		--primary: #8fb3ff;
-		--secondary: #001952;
-		--accent: #f199bf;
-	}
+	--primary-background: #202021;
+	--text-color: #fff;
+	--muted-text-color: #a0a0a0;
+	--primary: #8fb3ff;
+	--secondary: #001952;
+	--accent: #f199bf;
 }
 
 /* BS Overwrite */
 .btn {
-    border-radius: 2rem;
+	border-radius: 2rem;
 }
 
 /* Colors */
@@ -48,7 +33,7 @@ body {
 .text-muted-color,
 .text-muted-color:hover,
 .text-muted-color:focus {
-    color: var(--muted-text-color);
+	color: var(--muted-text-color);
 }
 
 .text-primary,
