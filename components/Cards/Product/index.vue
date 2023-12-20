@@ -1,6 +1,6 @@
 <script lang="ts">
-import { useDark } from '@vueuse/core';
-const isDark = useDark();
+import { useDark, useToggle } from '@vueuse/core';
+let isDark = useDark();
 
 export default {
     name: 'CardsProduct',
@@ -34,16 +34,22 @@ export default {
     computed: {
         getURL() {
             return `/products/${this.id}`
-        }
+        },
     }
 }
 </script>
 
 <template>
+    {{ isDark }}
     <div class="card shadow" style="margin-bottom: 1rem;" :data-bs-theme="`${isDark ? 'light' : 'dark'}`">
         <div class="card-body">
-            <h6 class="card-text float-end"><span v-if="details['isDefault']" title="This product is selected by default for this category">✔️</span><span v-if="details['isInternalProduct']" title="This product is only available within Gigaclear">🔒</span></h6>
-            <NuxtLink class="fadeLink" :to="getURL"><h5 class="card-title">{{ description }}</h5></NuxtLink>
+            <h6 class="card-text float-end"><span v-if="details['isDefault']"
+                    title="This product is selected by default for this category">✔️</span><span
+                    v-if="details['isInternalProduct']" title="This product is only available within Gigaclear">🔒</span>
+            </h6>
+            <NuxtLink class="fadeLink" :to="getURL">
+                <h5 class="card-title">{{ description }}</h5>
+            </NuxtLink>
             <p class="text-muted">{{ name }}</p>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">Speed</h6>
