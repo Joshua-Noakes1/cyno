@@ -6,6 +6,8 @@ let propertyID = route.params.id;
 // get property data
 let { data: propertyData, error: propertyError, loading: propertyLoading } = await useFetch(`/api/v1/getPropertyDetails?propertyID=${propertyID}`);
 
+console.log(propertyData)
+    
 // do seo stuff
 if (propertyData['value'] !== null) {
     try {
